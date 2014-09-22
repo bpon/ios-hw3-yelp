@@ -12,7 +12,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBOutlet var tableView: UITableView!
     var searchBar: UISearchBar!
-    @IBOutlet weak var filterButton: UIBarButtonItem!
     
     var client: YelpClient!
     var results: [NSDictionary] = []
@@ -32,14 +31,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Do any additional setup after loading the view, typically from a nib.
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 110
         
         searchBar = UISearchBar()
         searchBar.delegate = self
-        searchBar.becomeFirstResponder()
         navigationItem.titleView = searchBar
         
         client = YelpClient(consumerKey: yelpConsumerKey, consumerSecret: yelpConsumerSecret, accessToken: yelpToken, accessSecret: yelpTokenSecret)
         doSearch("food")
+        searchBar.becomeFirstResponder()
     }
     
     override func didReceiveMemoryWarning() {
@@ -79,10 +80,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 120
-    }
-    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         doSearch(searchBar.text)
         searchBar.endEditing(true)
@@ -97,6 +94,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     println(error)
             }
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        println("appeared")
     }
 }
 
