@@ -201,7 +201,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Filter" id="0mg-fn-5tu">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <segue destination="Dav-FF-wp7" kind="show" id="MJH-eH-KPG"/>
+                                <segue destination="Dav-FF-wp7" kind="show" identifier="filter" id="MJH-eH-KPG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -225,35 +225,84 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="hcF-gP-Vvb">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="hcF-gP-Vvb">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="sBj-1w-JH4">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ToggleFilterCell" rowHeight="40" id="sBj-1w-JH4" userLabel="FilterCell" customClass="FilterCell" customModule="Yelp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sBj-1w-JH4" id="uKl-BF-edR">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Setting" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewh-s2-BzX">
-                                                    <rect key="frame" x="8" y="8" width="461" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setting" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="47" translatesAutoresizingMaskIntoConstraints="NO" id="ewh-s2-BzX">
+                                                    <rect key="frame" x="8" y="11" width="47" height="17"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ewh-s2-BzX" firstAttribute="top" secondItem="uKl-BF-edR" secondAttribute="topMargin" constant="3" id="Hkv-1t-3HH"/>
+                                                <constraint firstItem="ewh-s2-BzX" firstAttribute="leading" secondItem="uKl-BF-edR" secondAttribute="leadingMargin" id="L8A-l0-Id8"/>
+                                                <constraint firstAttribute="centerY" secondItem="ewh-s2-BzX" secondAttribute="centerY" id="Xnz-Ld-Emc"/>
+                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="ewh-s2-BzX" secondAttribute="bottom" id="ae8-QM-vr1"/>
+                                                <constraint firstItem="ewh-s2-BzX" firstAttribute="top" secondItem="uKl-BF-edR" secondAttribute="topMargin" constant="4" id="hNc-Kf-Oy9"/>
+                                                <constraint firstItem="ewh-s2-BzX" firstAttribute="leading" secondItem="uKl-BF-edR" secondAttribute="leadingMargin" id="jK1-Ug-j1B"/>
+                                                <constraint firstItem="ewh-s2-BzX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="uKl-BF-edR" secondAttribute="topMargin" constant="1" id="qCo-LC-Euh"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Hkv-1t-3HH"/>
+                                                    <exclude reference="L8A-l0-Id8"/>
+                                                    <exclude reference="ae8-QM-vr1"/>
+                                                    <exclude reference="hNc-Kf-Oy9"/>
+                                                    <exclude reference="qCo-LC-Euh"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="settingLabel" destination="ewh-s2-BzX" id="B0X-35-MQ6"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="hcF-gP-Vvb" secondAttribute="trailing" constant="-16" id="Asz-fj-sKe"/>
+                            <constraint firstItem="hcF-gP-Vvb" firstAttribute="leading" secondItem="TLA-5B-9j2" secondAttribute="leading" id="H07-AR-uJp"/>
+                            <constraint firstItem="hcF-gP-Vvb" firstAttribute="leading" secondItem="TLA-5B-9j2" secondAttribute="leadingMargin" constant="-16" id="JLl-xv-aH8"/>
+                            <constraint firstItem="hcF-gP-Vvb" firstAttribute="top" secondItem="TLA-5B-9j2" secondAttribute="topMargin" id="Kfk-xJ-bAf"/>
+                            <constraint firstItem="hcF-gP-Vvb" firstAttribute="top" secondItem="TLA-5B-9j2" secondAttribute="topMargin" id="Lgc-bN-43N"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hcF-gP-Vvb" secondAttribute="trailing" constant="-16" id="Qb0-f5-YqT"/>
+                            <constraint firstItem="hcF-gP-Vvb" firstAttribute="leading" secondItem="TLA-5B-9j2" secondAttribute="leadingMargin" constant="-16" id="X3E-Zp-dlQ"/>
+                            <constraint firstItem="rJq-0x-lIN" firstAttribute="top" secondItem="hcF-gP-Vvb" secondAttribute="bottom" id="bWd-N2-t6g"/>
+                            <constraint firstItem="rJq-0x-lIN" firstAttribute="top" secondItem="hcF-gP-Vvb" secondAttribute="bottom" id="laQ-xy-vJt"/>
+                            <constraint firstItem="hcF-gP-Vvb" firstAttribute="leading" secondItem="TLA-5B-9j2" secondAttribute="leadingMargin" id="q4J-Q9-vtb"/>
+                            <constraint firstAttribute="trailing" secondItem="hcF-gP-Vvb" secondAttribute="trailing" id="s3N-Zu-Fg6"/>
+                            <constraint firstItem="rJq-0x-lIN" firstAttribute="top" secondItem="hcF-gP-Vvb" secondAttribute="bottom" id="u1z-vR-80R"/>
+                            <constraint firstItem="hcF-gP-Vvb" firstAttribute="top" secondItem="TLA-5B-9j2" secondAttribute="top" id="yKE-0U-E9p"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Asz-fj-sKe"/>
+                                <exclude reference="JLl-xv-aH8"/>
+                                <exclude reference="Kfk-xJ-bAf"/>
+                                <exclude reference="Lgc-bN-43N"/>
+                                <exclude reference="Qb0-f5-YqT"/>
+                                <exclude reference="X3E-Zp-dlQ"/>
+                                <exclude reference="q4J-Q9-vtb"/>
+                                <exclude reference="bWd-N2-t6g"/>
+                                <exclude reference="u1z-vR-80R"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="YMI-mB-3HG">
                         <barButtonItem key="rightBarButtonItem" title="Search" id="Adu-Un-gxM">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
-                                <action selector="onSearch:" destination="Dav-FF-wp7" id="dAC-Q1-LA7"/>
+                                <action selector="onSearchButtonClicked:" destination="Dav-FF-wp7" id="Aqs-AP-hKo"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

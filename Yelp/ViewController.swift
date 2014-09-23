@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, FilterViewControllerDelegate {
     
     @IBOutlet var tableView: UITableView!
     var searchBar: UISearchBar!
@@ -85,8 +85,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         searchBar.endEditing(true)
     }
     
+    func filterViewControllerSearchButtonClicked(filterViewController: FilterViewController) {
+        doSearch(searchBar.text)
+    }
+    
     func doSearch(searchText: String) {
-        if !searchText.isEmpty {
+        if (!searchText.isEmpty) {
             client.searchWithTerm(searchText, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 self.results = (response as NSDictionary)["businesses"] as [NSDictionary]
                 self.tableView.reloadData()
@@ -96,8 +100,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        println("appeared")
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+        if (segue.identifier == "filter") {
+            let destination = segue.destinationViewController as FilterViewController
+            destination.delegate = self
+        }
     }
 }
 
