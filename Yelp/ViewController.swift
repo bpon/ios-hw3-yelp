@@ -39,7 +39,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         navigationItem.titleView = searchBar
         
         client = YelpClient(consumerKey: yelpConsumerKey, consumerSecret: yelpConsumerSecret, accessToken: yelpToken, accessSecret: yelpTokenSecret)
-        doSearch("food")
         searchBar.becomeFirstResponder()
     }
     
@@ -81,17 +80,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        doSearch(searchBar.text)
+        doSearch(["term": searchBar.text, "location": "San Francisco"])
         searchBar.endEditing(true)
     }
     
     func filterViewControllerSearchButtonClicked(filterViewController: FilterViewController) {
-        doSearch(searchBar.text)
+        let dealsFilter = filterViewController.toggleStates[0] != nil && filterViewController.toggleStates[0]!
+        let radius = filterViewController.radius[filterViewController.selectedStates[1]!]
+        let sort = filterViewController.selectedStates[2]!
+        doSearch([
+            "term": searchBar.text,
+            "location": "San Francisco",
+            "deals_filter": dealsFilter ? "1" : "0",
+            "radius_filter": "\(radius)",
+            "sort": "\(sort)"
+        ])
     }
     
-    func doSearch(searchText: String) {
-        if (!searchText.isEmpty) {
-            client.searchWithTerm(searchText, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+    func doSearch(params: [String: String]) {
+        let searchText = params["term"]
+        if (searchText != nil && !searchText!.isEmpty) {
+            client.searchWithParams(params, success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 self.results = (response as NSDictionary)["businesses"] as [NSDictionary]
                 self.tableView.reloadData()
                 }) { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in

@@ -31,10 +31,16 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     var delegate: FilterViewControllerDelegate!
     
     let filterSettings = [
-        FilterSection(title: "Most Popular", type: FilterType.Toggle, settings: ["Open Now", "Hot & New", "Offering a Deal", "Delivery"]),
-        FilterSection(title: "Distance", type: FilterType.Select, settings: ["Auto", "0.3 miles", "1 mile", "5 miles", "20 miles"]),
+        FilterSection(title: "General", type: FilterType.Toggle, settings: ["Offering a Deal"]),
+        FilterSection(title: "Distance", type: FilterType.Select, settings: ["Auto", "1 km", "5 km", "10 km", "25 km"]),
         FilterSection(title: "Sort by", type: FilterType.Select, settings: ["Best Match", "Distance", "Highest Rated"])
     ]
+    
+    let radius = [40000, 1000, 5000, 10000, 25000]
+    
+    var toggleStates: Dictionary<Int, Bool> = [:]
+    
+    var selectedStates: Dictionary<Int, Int> = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,20 +59,26 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         return filterSettings[section].settings.count
     }
     
-    func cellForFilterType(filterType: FilterType) -> FilterCell {
+    func cellForFilterTypeAtIndexPath(filterType: FilterType, indexPath: NSIndexPath) -> FilterCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("FilterCell") as FilterCell
         switch (filterType) {
         case FilterType.Toggle:
-            cell.accessoryView = UISwitch(frame: CGRectZero)
+            let toggle = UISwitch(frame: CGRectZero)
+            toggle.tag = tagForIndexPath(indexPath)
+            toggle.addTarget(self, action: "onSwitchToggled:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.accessoryView = toggle
         case FilterType.Select:
-            break
+            if (indexPath.row == 0) {
+                cell.setSelected(true, animated: true)
+                selectedStates[indexPath.section] = indexPath.row
+            }
         }
         return cell
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let filterSection = filterSettings[indexPath.section]
-        let cell = cellForFilterType(filterSection.type)
+        let cell = cellForFilterTypeAtIndexPath(filterSection.type, indexPath: indexPath)
         cell.settingLabel.text = filterSection.settings[indexPath.row]
         return cell
     }
@@ -81,6 +93,10 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
         return headerView
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        selectedStates[indexPath.section] = indexPath.row
+    }
+    
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 34
     }
@@ -92,6 +108,17 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     @IBAction func onSearchButtonClicked(sender: AnyObject) {
         delegate.filterViewControllerSearchButtonClicked(self)
         navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func onSwitchToggled(sender: UISwitch) {
+        toggleStates.removeValueForKey(sender.tag)
+        if (sender.on) {
+            toggleStates[sender.tag] = true
+        }
+    }
+    
+    func tagForIndexPath(indexPath: NSIndexPath) -> Int {
+        return indexPath.section * 100 + indexPath.row
     }
 
     /*
