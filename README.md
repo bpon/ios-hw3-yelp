@@ -18,3 +18,5 @@
 - [ ] Categories should show a subset of the full list with a "See All" row to expand. Category list is here: http://www.yelp.com/developers/documentation/category_list (Links to an external site.)
 - [x] Clicking on the "Search" button should dismiss the filters page and trigger the search w/ the new filter settings.
 - [ ] Optional: Implement the restaurant detail page.
+
+![Demo](https://raw.githubusercontent.com/bpon/ios-hw3-yelp/master/demo.gif)
