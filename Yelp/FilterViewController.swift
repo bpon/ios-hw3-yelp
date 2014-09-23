@@ -42,6 +42,8 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     
     var selectedStates: Dictionary<Int, Int> = [:]
     
+    var collapsedStates: Dictionary<Int, Bool> = [1: true, 2: true]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -56,7 +58,12 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filterSettings[section].settings.count
+        switch (filterSettings[section].type) {
+        case FilterType.Select:
+            return collapsedStates[section]! ? 1 : filterSettings[section].settings.count
+        default:
+            return filterSettings[section].settings.count
+        }
     }
     
     func cellForFilterTypeAtIndexPath(filterType: FilterType, indexPath: NSIndexPath) -> FilterCell {
@@ -94,7 +101,15 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        selectedStates[indexPath.section] = indexPath.row
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if (filterSettings[indexPath.section].type == FilterType.Select) {
+            if (!collapsedStates[indexPath.section]!) {
+                selectedStates[indexPath.section] = indexPath.row
+            }
+            collapsedStates[indexPath.section] = !collapsedStates[indexPath.section]!
+            let indexSet = NSMutableIndexSet(index: indexPath.section)
+            tableView.reloadSections(indexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
+        }
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
