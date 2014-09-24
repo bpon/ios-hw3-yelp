@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol FilterViewControllerDelegate {
+@objc protocol FilterViewControllerDelegate {
     
     func filterViewControllerSearchButtonClicked(filterViewController: FilterViewController)
 }
@@ -28,7 +28,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
 
     @IBOutlet weak var tableView: UITableView!
     
-    var delegate: FilterViewControllerDelegate!
+    weak var delegate: FilterViewControllerDelegate?
     
     let filterSettings = [
         FilterSection(title: "General", type: FilterType.Toggle, settings: ["Offering a Deal"]),
@@ -106,7 +106,7 @@ class FilterViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @IBAction func onSearchButtonClicked(sender: AnyObject) {
-        delegate.filterViewControllerSearchButtonClicked(self)
+        delegate?.filterViewControllerSearchButtonClicked(self)
         navigationController?.popViewControllerAnimated(true)
     }
     
