@@ -1,4 +1,4 @@
-# Homework 2 - Rotten Tomatoes
+# Homework 3 - Yelp
 
 **Hours taken**: 12
 
